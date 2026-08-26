@@ -25,3 +25,8 @@ compare_*.py
 .idea/
 .pytest_cache/
 *.log
+".vscode/" 
+".vscode/" 
+".idea/" 
+".pytest_cache/" 
+"*.log" 
