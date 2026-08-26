@@ -1,4 +1,4 @@
-﻿[project]
+[project]
 name = "asrx"
 version = "0.3.0"
 description = "Universal, ultra-fast Forced Alignment, VAD Segmentation, and Speaker Diarization engine."

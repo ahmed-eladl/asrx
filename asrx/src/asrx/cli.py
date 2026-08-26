@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 
 def main():
     if hasattr(sys.stdout, 'reconfigure'):
