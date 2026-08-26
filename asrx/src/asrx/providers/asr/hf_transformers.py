@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 class HFTransformersASR(ASRProvider):
     """Generic wrapper for any Hugging Face automatic-speech-recognition pipeline (e.g. SeamlessM4T, Qwen-Audio, Whisper fine-tunes)."""
     
-    def __init__(self, model_id: str, device: str = "cuda"):
+    def __init__(self, model_id: str, device: str = None):
         try:
             from transformers import pipeline
             import torch

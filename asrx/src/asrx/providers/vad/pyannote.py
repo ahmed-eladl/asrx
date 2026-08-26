@@ -274,7 +274,7 @@ class Pyannote(Vad):
 
 from ...interfaces import VADProvider
 class PyannoteVAD(VADProvider):
-    def __init__(self, use_auth_token=None, device='cuda'):
+    def __init__(self, use_auth_token=None, device=None):
         self.model = Pyannote(torch.device(device), token=use_auth_token)
         
     def detect(self, audio):

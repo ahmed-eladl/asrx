@@ -90,11 +90,12 @@ class MMSAlignment(AlignmentProvider):
     def __init__(
         self,
         model_id: str = "facebook/mms-1b-all",
-        device: str = "cuda",
+        device: str = None,
         language: str = "ar",
     ):
         self.model_id = model_id
-        self.device = device
+        import torch
+        self.device = device if device is not None else ('cuda' if torch.cuda.is_available() else 'cpu')
         self._current_lang = None
         self._model = None
         self._processor = None

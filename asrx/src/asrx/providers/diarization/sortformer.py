@@ -29,12 +29,13 @@ class SortformerDiarization(DiarizationProvider):
     def __init__(
         self,
         model_name: str = "nvidia/diar_streaming_sortformer_4spk-v2.1",
-        device: str = "cuda",
+        device: str = None,
         streaming_mode: bool = False,
         chunk_len: int = 340,
     ):
         self.model_name = model_name
-        self.device = device
+        import torch
+        self.device = device if device is not None else ('cuda' if torch.cuda.is_available() else 'cpu')
         self.streaming_mode = streaming_mode
         self.chunk_len = chunk_len
         self._model = None

@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class SpeechBrainASRProvider(ASRProvider):
     """Wrapper for SpeechBrain ASR models (e.g., asafaya hubert, speechbrain wav2vec2)."""
     
-    def __init__(self, model_id: str, device: str = "cuda"):
+    def __init__(self, model_id: str, device: str = None):
         try:
             from speechbrain.inference.ASR import EncoderASR, EncoderDecoderASR
         except ImportError:

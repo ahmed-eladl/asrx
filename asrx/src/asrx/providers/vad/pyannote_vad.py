@@ -34,7 +34,7 @@ class PyannoteVAD(VADProvider):
         segments = vad.detect("audio.wav")
     """
 
-    def __init__(self, use_auth_token: Optional[str] = None, device: str = "cuda"):
+    def __init__(self, use_auth_token: Optional[str] = None, device: str = None):
         self.device = torch.device(device if torch.cuda.is_available() else "cpu")
         self.use_auth_token = use_auth_token
         self._pipeline = None

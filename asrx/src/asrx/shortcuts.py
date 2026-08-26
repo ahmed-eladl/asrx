@@ -1,5 +1,6 @@
 from typing import Any, Dict, List, Optional, Union
 import logging
+import torch
 
 from .interfaces import AlignmentProvider, DiarizationProvider, VADProvider
 from .aligner import AlignmentPipeline
@@ -10,7 +11,7 @@ logger = logging.getLogger(__name__)
 # Cached pipeline instances for one-liner re-use
 _GLOBAL_ALIGNERS: Dict[str, AlignmentPipeline] = {}
 
-# Alignment backend registry — string name → factory function
+# Alignment backend registry â€” string name â†’ factory function
 _ALIGNMENT_BACKENDS = {
     "wav2vec2": lambda language, device, **kw: _build_w2v(language, device, **kw),
     "mms": lambda language, device, **kw: _build_mms(language, device, **kw),
@@ -33,7 +34,7 @@ _DIARIZATION_BACKENDS = {
 }
 
 
-# ── Private builder functions (lazy imports) ─────────────────────────────────
+# â”€â”€ Private builder functions (lazy imports) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _build_w2v(language: str, device: str, **kw):
     from .providers.alignment.wav2vec2 import Wav2Vec2Alignment
@@ -106,14 +107,14 @@ def _build_sortformer(device: str, **kw):
     )
 
 
-# ── Public API ────────────────────────────────────────────────────────────────
+# â”€â”€ Public API â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def load_aligner(
     language: str = "ar",
     aligner: Union[str, AlignmentProvider] = "wav2vec2",
     vad: Union[bool, str, VADProvider] = True,
     diarize: Union[bool, str, DiarizationProvider] = False,
-    device: str = "cuda",
+    device: Optional[str] = None,
     hf_token: Optional[str] = None,
     **backend_kwargs,
 ) -> AlignmentPipeline:
@@ -176,7 +177,7 @@ def load_aligner(
             device="cuda",
         )
     """
-    # ── Resolve aligner ──────────────────────────────────────────────────────
+    # â”€â”€ Resolve aligner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if isinstance(aligner, str):
         aligner_key = aligner.lower()
         if aligner_key not in _ALIGNMENT_BACKENDS:
@@ -199,7 +200,7 @@ def load_aligner(
     else:
         align_provider = _build_w2v(language, device)
 
-    # ── Resolve VAD ──────────────────────────────────────────────────────────
+    # â”€â”€ Resolve VAD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     vad_provider = None
     if vad is not False and vad is not None:
         if isinstance(vad, VADProvider):
@@ -214,7 +215,7 @@ def load_aligner(
             except Exception as e:
                 logger.warning(f"Could not load VAD '{vad_key}': {e}")
 
-    # ── Resolve Diarizer ─────────────────────────────────────────────────────
+    # â”€â”€ Resolve Diarizer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     diarizer_provider = None
     if diarize is not False and diarize is not None:
         if isinstance(diarize, DiarizationProvider):
@@ -247,12 +248,12 @@ def align(
     aligner: Union[str, AlignmentProvider] = "wav2vec2",
     vad: Union[bool, str, VADProvider] = True,
     diarize: Union[bool, str, DiarizationProvider] = False,
-    device: str = "cuda",
+    device: Optional[str] = None,
     hf_token: Optional[str] = None,
     **backend_kwargs,
 ) -> Dict[str, Any]:
     """
-    One-liner forced alignment. Takes audio + pre-existing text → word timestamps.
+    One-liner forced alignment. Takes audio + pre-existing text â†’ word timestamps.
 
     Args:
         audio:    Path to audio file, numpy array, or torch tensor
@@ -294,3 +295,4 @@ def align(
 
     pipeline = _GLOBAL_ALIGNERS[cache_key]
     return pipeline.align(audio=audio, text=text, language=language)
+

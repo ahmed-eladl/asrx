@@ -82,13 +82,14 @@ class CTCSegmentationAlignment(AlignmentProvider):
         language: str = "en",
         backend: str = "mms",
         model_id: Optional[str] = None,
-        device: str = "cuda",
+        device: str = None,
         confidence_threshold: float = -5.0,
         index_duration: float = 0.02,
     ):
         self.language = language.lower()
         self.backend = backend
-        self.device = device
+        import torch
+        self.device = device if device is not None else ('cuda' if torch.cuda.is_available() else 'cpu')
         self.confidence_threshold = confidence_threshold
         self.index_duration = index_duration
         self._model = None

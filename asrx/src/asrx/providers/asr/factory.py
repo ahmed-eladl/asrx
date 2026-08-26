@@ -17,7 +17,7 @@ def register_asr_provider(name: str, provider_cls_or_factory: Union[Type[ASRProv
     """
     _CUSTOM_PROVIDERS[name.lower()] = provider_cls_or_factory
 
-def create_asr_provider(model_id: str, device: str = "cuda", backend: Optional[str] = None, **kwargs) -> ASRProvider:
+def create_asr_provider(model_id: str, device: str = None, backend: Optional[str] = None, **kwargs) -> ASRProvider:
     """
     Universal Factory function that routes to the correct ASRProvider based on model ID, local path, server URL, or backend.
     """

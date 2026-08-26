@@ -36,7 +36,7 @@ class NeMoMarbleNetVAD(VADProvider):
         segments = vad.detect("audio.wav")
     """
 
-    def __init__(self, model_name: str = "vad_multilingual_marblenet", device: str = "cuda"):
+    def __init__(self, model_name: str = "vad_multilingual_marblenet", device: str = None):
         self.model_name = model_name
         self.device = torch.device(device if torch.cuda.is_available() else "cpu")
         self._model = None

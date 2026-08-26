@@ -7,14 +7,15 @@ logger = logging.getLogger(__name__)
 class NeMoASRProvider(ASRProvider):
     """Wrapper for NVIDIA NeMo models (Parakeet, Conformer, Nemotron)."""
     
-    def __init__(self, model_id: str, device: str = "cuda"):
+    def __init__(self, model_id: str, device: str = None):
         try:
             import nemo.collections.asr as nemo_asr
             import torch
         except ImportError:
             raise ImportError("Please install NeMo: pip install nemo_toolkit[asr]")
             
-        self.device = device
+        import torch
+        self.device = device if device is not None else ('cuda' if torch.cuda.is_available() else 'cpu')
         
         # Determine the class based on the model type (CTC or RNNT/EncDec)
         # Most Parakeet/Conformer open models are EncDecCTCModelBPE

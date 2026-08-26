@@ -549,8 +549,9 @@ def merge_words(segments, separator="|"):
 
 from ...interfaces import AlignmentProvider
 class Wav2Vec2Alignment(AlignmentProvider):
-    def __init__(self, model_id='en', device='cuda'):
-        self.device = device
+    def __init__(self, model_id='en', device=None):
+        import torch
+        self.device = device if device is not None else ('cuda' if torch.cuda.is_available() else 'cpu')
         self.model, self.metadata = load_align_model(model_id, device)
         
     def align(self, text_segments, audio):

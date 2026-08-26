@@ -282,7 +282,7 @@ class Segment:
 
 from ...interfaces import DiarizationProvider
 class PyannoteDiarization(DiarizationProvider):
-    def __init__(self, use_auth_token=None, device='cuda', model_name=None):
+    def __init__(self, use_auth_token=None, device=None, model_name=None):
         self.pipeline = DiarizationPipeline(model_name=model_name, token=use_auth_token, device=device)
         
     def diarize(self, audio, word_segments=None):

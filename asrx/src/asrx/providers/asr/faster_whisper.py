@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 class FasterWhisperASR(ASRProvider):
     """Wrapper for faster-whisper CTranslate2 models."""
     
-    def __init__(self, model_size_or_path: str = "large-v3", device: str = "cuda", compute_type: str = "float16"):
+    def __init__(self, model_size_or_path: str = "large-v3", device: str = None, compute_type: str = "float16"):
         try:
             from faster_whisper import WhisperModel
         except ImportError:

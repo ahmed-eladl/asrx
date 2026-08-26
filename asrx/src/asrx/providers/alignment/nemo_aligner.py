@@ -73,11 +73,12 @@ class NeMoForcedAligner(AlignmentProvider):
         language: str = "en",
         model_name: Optional[str] = None,
         model_path: Optional[str] = None,
-        device: str = "cuda",
+        device: str = None,
         use_local_attention: bool = True,
     ):
         self.language = language.lower()
-        self.device = device
+        import torch
+        self.device = device if device is not None else ('cuda' if torch.cuda.is_available() else 'cpu')
         self.use_local_attention = use_local_attention
         self._model = None
         self._output_timestep_duration = None

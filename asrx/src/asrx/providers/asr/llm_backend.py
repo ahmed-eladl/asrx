@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 class LLMASRProvider(ASRProvider):
     """Wrapper for bleeding edge multimodal LLMs (Qwen3, Audar, Gemma-4)."""
     
-    def __init__(self, model_id: str, device: str = "cuda"):
+    def __init__(self, model_id: str, device: str = None):
         try:
             from transformers import AutoProcessor, AutoModelForCausalLM
         except ImportError:
