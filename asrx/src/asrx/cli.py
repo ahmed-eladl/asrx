@@ -12,7 +12,7 @@ def main():
     print()
     print()
     print(f"\033[36m{banner}\033[0m")
-    print("\nWelcome to ASRX! The Universal Automatic Speech Recognition Library.\n")
+    print("\nWelcome to ASRX! The Universal Forced Alignment, VAD, and Speaker Diarization Engine.\n")
     print("Usage examples:")
     print("  asrx --help")
     print("  from asrx import ASRX\n")
@@ -21,6 +21,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
 
 
