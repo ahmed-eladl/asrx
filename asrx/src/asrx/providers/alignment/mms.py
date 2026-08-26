@@ -153,7 +153,7 @@ class MMSAlignment(AlignmentProvider):
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
         with torch.no_grad():
             logits = self._model(**inputs).logits
-        return torch.log_softmax(logits, dim=-1).squeeze(0)  # (T, vocab)
+        return torch.log_softmax(logits, dim=-1).squeeze(0).cpu().detach()  # (T, vocab)
 
     def _get_trellis(self, emission, tokens):
         """CTC trellis via DP — same algorithm as Wav2Vec2."""

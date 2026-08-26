@@ -126,7 +126,6 @@ class NeMoMarbleNetVAD(VADProvider):
             # or a simple manual sliding window for the model
             
             import torchaudio
-            import soundfile as sf
             data, sr = sf.read(audio_path)
             if data.ndim > 1:
                 data = data.mean(axis=1)
