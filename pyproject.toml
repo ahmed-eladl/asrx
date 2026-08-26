@@ -1,6 +1,6 @@
 [project]
 name = "asrx"
-version = "0.3.0"
+version = "0.3.1"
 description = "Universal, ultra-fast Forced Alignment, VAD Segmentation, and Speaker Diarization engine."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -27,7 +27,7 @@ nemo = ["nemo_toolkit[asr]>=2.5.0"]
 # Required for CTC-Segmentation (Confidence scores)
 ctc = ["ctc-segmentation"]
 # Required for FlashVAD
-flashvad = ["flashvad @ git+https://github.com/oss-codes/flashvad.git"]
+flashvad = ["flashvad"]
 
 # Install all backends (WARNING: Can cause dependency conflicts, prefer targeted installs)
 all = ["asrx[transformers,pyannote,nemo,ctc,flashvad]"]
