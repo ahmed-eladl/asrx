@@ -1,0 +1,40 @@
+[project]
+name = "asrx"
+version = "0.3.0"
+description = "Universal, ultra-fast Forced Alignment, VAD Segmentation, and Speaker Diarization engine."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "ASRX Team" }]
+
+dependencies = [
+    "torch>=2.0.0",
+    "torchaudio>=2.0.0",
+    "numpy",
+    "pandas",
+    "nltk",
+    "librosa",
+    "soundfile"
+]
+
+[project.optional-dependencies]
+# Required for wav2vec2 and MMS alignment
+transformers = ["transformers"]
+# Required for Pyannote VAD and Diarization
+pyannote = ["pyannote.audio"]
+# Required for NeMo Aligner, VAD, and Diarization
+nemo = ["nemo_toolkit[asr]>=2.5.0"]
+# Required for CTC-Segmentation (Confidence scores)
+ctc = ["ctc-segmentation"]
+# Required for FlashVAD
+flashvad = ["flashvad @ git+https://github.com/oss-codes/flashvad.git"]
+
+# Install all backends (WARNING: Can cause dependency conflicts, prefer targeted installs)
+all = ["asrx[transformers,pyannote,nemo,ctc,flashvad]"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
