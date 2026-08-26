@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+﻿from abc import ABC, abstractmethod
 from typing import List, Dict, Any
 
 class VADProvider(ABC):
@@ -8,16 +8,6 @@ class VADProvider(ABC):
         """
         Takes audio and returns a list of speech segments.
         Expected format: [{'start': 0.0, 'end': 2.5}, ...]
-        """
-        pass
-
-class ASRProvider(ABC):
-    """Abstract Base Class for Automatic Speech Recognition."""
-    @abstractmethod
-    def transcribe(self, audio: Any, language: str = None) -> List[Dict[str, Any]]:
-        """
-        Takes an audio segment (and optionally language) and returns transcribed text.
-        Expected format: [{'text': 'Hello world', 'start': 0.0, 'end': 2.5}, ...]
         """
         pass
 
@@ -40,3 +30,4 @@ class DiarizationProvider(ABC):
         Expected format: [{'speaker': 'SPEAKER_00', 'start': 0.0, 'end': 2.5}, ...]
         """
         pass
+
