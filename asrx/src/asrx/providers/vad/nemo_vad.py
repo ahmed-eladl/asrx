@@ -126,7 +126,11 @@ class NeMoMarbleNetVAD(VADProvider):
             # or a simple manual sliding window for the model
             
             import torchaudio
-            waveform, sr = torchaudio.load(audio_path)
+            import soundfile as sf
+            data, sr = sf.read(audio_path)
+            if data.ndim > 1:
+                data = data.mean(axis=1)
+            waveform = torch.from_numpy(data).float().unsqueeze(0)
             if sr != SAMPLE_RATE:
                 waveform = torchaudio.functional.resample(waveform, sr, SAMPLE_RATE)
             

@@ -127,7 +127,11 @@ def align(
 
     if isinstance(audio, str):
         import torchaudio
-        audio, sr = torchaudio.load(audio)
+        import soundfile as sf
+        data, sr = sf.read(audio)
+        if data.ndim > 1:
+            data = data.mean(axis=1)
+        audio = torch.from_numpy(data).float().unsqueeze(0)
         if sr != SAMPLE_RATE:
             audio = torchaudio.functional.resample(audio, sr, SAMPLE_RATE)
     elif not torch.is_tensor(audio):

@@ -130,9 +130,12 @@ class MMSAlignment(AlignmentProvider):
 
     def _load_audio(self, audio: Any) -> np.ndarray:
         if isinstance(audio, str) and os.path.exists(audio):
-            wav, sr = torchaudio.load(audio)
-            if wav.shape[0] > 1:
-                wav = wav.mean(dim=0, keepdim=True)
+            import soundfile as sf
+            data, sr = sf.read(audio)
+            if data.ndim > 1:
+                data = data.mean(axis=1) # to mono
+            
+            wav = torch.from_numpy(data).float().unsqueeze(0)
             if sr != SAMPLE_RATE:
                 wav = torchaudio.functional.resample(wav, sr, SAMPLE_RATE)
             return wav.squeeze().numpy()
@@ -255,10 +258,11 @@ class MMSAlignment(AlignmentProvider):
                 emission = self._get_emission(seg_wav)
 
                 # Tokenize reference text
-                inputs = self._processor(
-                    seg_wav, sampling_rate=SAMPLE_RATE, return_tensors="pt"
-                )
-                with self._processor.tokenizer.as_target_processor():
+                if hasattr(self._processor.tokenizer, "as_target_processor"):
+                    with self._processor.tokenizer.as_target_processor():
+                        labels = self._processor.tokenizer(text).input_ids
+                else:
+                    # Fallback for newer transformers (e.g. v4.30+)
                     labels = self._processor.tokenizer(text).input_ids
 
                 if not labels:

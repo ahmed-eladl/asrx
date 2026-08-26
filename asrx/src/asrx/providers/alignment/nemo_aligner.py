@@ -239,7 +239,19 @@ class NeMoForcedAligner(AlignmentProvider):
                     )
 
                     word_segs = []
-                    for word_obj in utt_obj.words:
+                    
+                    # Handle NeMo < 3.0.0 (.words) and NeMo >= 3.0.0 (.segments_and_tokens)
+                    words_list = []
+                    if hasattr(utt_obj, "words"):
+                        words_list = utt_obj.words
+                    elif hasattr(utt_obj, "segments_and_tokens"):
+                        for seg in utt_obj.segments_and_tokens:
+                            if hasattr(seg, "words_and_tokens"):
+                                for w in seg.words_and_tokens:
+                                    if type(w).__name__ == "Word":
+                                        words_list.append(w)
+                    
+                    for word_obj in words_list:
                         word_segs.append({
                             "word": word_obj.text,
                             "start": round(float(word_obj.t_start) + seg_start, 3),
