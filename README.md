@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="asrx_logo_high_res.png" alt="ASRX Logo" width="600">
+  <img src="asrx_logo.png" alt="ASRX Logo" width="600">
 </p>
 
 # ASRX: Universal Forced Alignment & Speech Segmentation
