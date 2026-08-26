@@ -20,3 +20,8 @@ test_*.py
 inspect_*.py
 create_*.py
 compare_*.py
+
+.vscode/
+.idea/
+.pytest_cache/
+*.log
